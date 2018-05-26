@@ -21,6 +21,14 @@ def sensor():
     ldr = LightSensor(4)
     return ldr.value;
 
+# Send an email using specified email script
+def email():
+    script = 'mailgun.sh'
+    now = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
+    # if a different email script is used, the options below will most likely need to be modified.
+    subprocess.call([script, '-s', 'Tripped laser', '-b', "image to come soon: " + now])
+    return True;
+
 # Detects if the Light sensor has become dark
 def detection():
     while True:
@@ -29,6 +37,7 @@ def detection():
         if light < .5:
             ledon()
             print "Tripped"
+            email()
         if light >= .5:
             ledoff()
         sleep(1)
@@ -54,7 +63,6 @@ def ledon():
 
 # Takes a picture using the picamera and saves it to /pictures directory with timestamp
 def camera():
-    now = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
     from picamera import PiCamera
     camera = PiCamera()
     camera.start_preview()
