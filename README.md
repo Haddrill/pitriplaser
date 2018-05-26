@@ -2,9 +2,9 @@
 Program to run a trip laser system from a rasberry pi
 
 ## Project developed by:
--Jetrin Anderson
--Shadi Edalatian
--Shaun Haddrill
+- Jetrin Anderson
+- Shadi Edalatian
+- Shaun Haddrill
 
 ## Description
 This project was developed for subject IFB 102 at QUT University.
