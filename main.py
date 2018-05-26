@@ -8,12 +8,14 @@ from datetime import datetime
 sleep = time.sleep
 now = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
 
+# Turns laser on using gpiozero library
 def laser():
     from gpiozero import DigitalOutputDevice
     laser = DigitalOutputDevice(17)
     laser.on()
     return True;
 
+# Turns laser off using GPIO library
 def laseron():
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
@@ -21,38 +23,51 @@ def laseron():
     GPIO.output(17,GPIO.HIGH)
     return True;
 
+# Turns LDR sensor on and returns a reading
 def sensor():
     from gpiozero import LightSensor    
     ldr = LightSensor(4)
     return ldr.value;
 
+# Detects if the Light sensor has become dark
 def detection():
-    from gpiozero import LightSensor    
-    ldr = LightSensor(4)
-    ldr.when_dark = lambda: print("intruder")
-    return True;
+    while True:
+        light = sensor()
+        print light
+        if light < .5:
+            ledon()
+            print "Intruder"
+        if light > .5:
+            ledoff()
+        sleep(1)
+    return;
 
+# Turns LED light on using gpiozero library
 def led():
     from gpiozero import LED
     led = LED(18)
     led.on()
     return True;
 
+# Turns LED off using GPIO library
 def ledoff():
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
     GPIO.setup(18,GPIO.OUT)
     GPIO.output(18,GPIO.LOW)
+    print "LED off"
     return True;
 
+# Turns LED on using GPIO library
 def ledon():
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
     GPIO.setup(18,GPIO.OUT)
     GPIO.output(18,GPIO.HIGH)
-    print"Laser on"
+    print"LED on"
     return True;
 
+# Takes a picture using the picamera and saves it to /pictures directory with timestamp
 def camera():
     from picamera import PiCamera
     camera = PiCamera()
@@ -66,5 +81,5 @@ def camera():
 #ledon()
 #led()
 #laser()
-print detection()
+detection()
 #sensor()
