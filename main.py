@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO
 from gpiozero import LightSensor    
 
 sleep = time.sleep
-now = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
+start = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
 
 # Turns laser off using GPIO library
 def laseron():
@@ -28,8 +28,8 @@ def detection():
         print light
         if light < .5:
             ledon()
-            print "Intruder"
-        if light > .5:
+            print "Tripped"
+        if light >= .5:
             ledoff()
         sleep(1)
     return;
@@ -40,7 +40,7 @@ def ledoff():
     GPIO.setwarnings(False)
     GPIO.setup(18,GPIO.OUT)
     GPIO.output(18,GPIO.LOW)
-    print "LED off"
+    #print "LED off"
     return True;
 
 # Turns LED on using GPIO library
@@ -49,11 +49,12 @@ def ledon():
     GPIO.setwarnings(False)
     GPIO.setup(18,GPIO.OUT)
     GPIO.output(18,GPIO.HIGH)
-    print"LED on"
+    #print"LED on"
     return True;
 
 # Takes a picture using the picamera and saves it to /pictures directory with timestamp
 def camera():
+    now = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
     from picamera import PiCamera
     camera = PiCamera()
     camera.start_preview()
