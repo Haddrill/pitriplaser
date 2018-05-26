@@ -3,17 +3,10 @@ import subprocess
 import sys
 import time
 import RPi.GPIO as GPIO
-from datetime import datetime
+from gpiozero import LightSensor    
 
 sleep = time.sleep
 now = time.strftime("%Y%m%d_%H%M%S", time.gmtime())
-
-# Turns laser on using gpiozero library
-def laser():
-    from gpiozero import DigitalOutputDevice
-    laser = DigitalOutputDevice(17)
-    laser.on()
-    return True;
 
 # Turns laser off using GPIO library
 def laseron():
@@ -25,7 +18,6 @@ def laseron():
 
 # Turns LDR sensor on and returns a reading
 def sensor():
-    from gpiozero import LightSensor    
     ldr = LightSensor(4)
     return ldr.value;
 
@@ -41,13 +33,6 @@ def detection():
             ledoff()
         sleep(1)
     return;
-
-# Turns LED light on using gpiozero library
-def led():
-    from gpiozero import LED
-    led = LED(18)
-    led.on()
-    return True;
 
 # Turns LED off using GPIO library
 def ledoff():
@@ -79,7 +64,6 @@ def camera():
 
 #camera()
 #ledon()
-#led()
 #laser()
 detection()
 #sensor()
